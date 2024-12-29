@@ -75,33 +75,47 @@ import mne
 import numpy as np
 import matplotlib.pyplot as plt
 
-i_atom = 4
-n_plots = 3
-figsize = (n_plots * 5, 5.5)
-fig, axes = plt.subplots(1, n_plots, figsize=figsize, squeeze=False)
+def display_atom(cdl,i_atom):
 
-# Plot the spatial map of the learn atom using mne topomap
-ax = axes[0, 0]
-u_hat = cdl.u_hat_[i_atom]
-mne.viz.plot_topomap(u_hat, info, axes=ax, show=False)
-ax.set(title='Learned spatial pattern')
+    n_plots = 3
+    figsize = (n_plots * 5, 5.5)
+    fig, axes = plt.subplots(1, n_plots, figsize=figsize, squeeze=False)
 
-# Plot the temporal pattern of the learn atom
-ax = axes[0, 1]
-v_hat = cdl.v_hat_[i_atom]
-t = np.arange(v_hat.size) / sfreq
-ax.plot(t, v_hat)
-ax.set(xlabel='Time (sec)', title='Learned temporal waveform')
-ax.grid(True)
+    # Plot the spatial map of the learn atom using mne topomap
+    ax = axes[0, 0]
+    u_hat = cdl.u_hat_[i_atom]
+    mne.viz.plot_topomap(u_hat, info, axes=ax, show=False)
+    ax.set(title='Learned spatial pattern')
 
-# Plot the psd of the time atom
-ax = axes[0, 2]
-psd = np.abs(np.fft.rfft(v_hat)) ** 2
-frequencies = np.linspace(0, sfreq / 2.0, len(psd))
-ax.semilogy(frequencies, psd)
-ax.set(xlabel='Frequencies (Hz)', title='Power Spectral Density')
-ax.grid(True)
-ax.set_xlim(0, 30)
+    # Plot the temporal pattern of the learn atom
+    ax = axes[0, 1]
+    v_hat = cdl.v_hat_[i_atom]
+    t = np.arange(v_hat.size) / sfreq
+    ax.plot(t, v_hat)
+    ax.set(xlabel='Time (sec)', title='Learned temporal waveform')
+    ax.grid(True)
 
-plt.tight_layout()
-plt.show()
+    # Plot the psd of the time atom
+    ax = axes[0, 2]
+    psd = np.abs(np.fft.rfft(v_hat)) ** 2
+    frequencies = np.linspace(0, sfreq / 2.0, len(psd))
+    ax.semilogy(frequencies, psd)
+    ax.set(xlabel='Frequencies (Hz)', title='Power Spectral Density')
+    ax.grid(True)
+    ax.set_xlim(0, 30)
+
+    plt.tight_layout()
+    plt.show()
+
+def display_atoms(cdl,n_atoms):
+
+    n_plots = n_atoms
+    figsize = ((n_plots / 2) * 5, (n_plots / 2) * 5.5)
+    fig, axes = plt.subplots(1, n_plots, figsize=figsize, squeeze=False)
+
+    ax = axes[0, 1]
+    v_hat = cdl.v_hat_[i_atom]
+    t = np.arange(v_hat.size) / sfreq
+    ax.plot(t, v_hat)
+    ax.set(xlabel='Time (sec)', title='Learned temporal waveform')
+    ax.grid(True)
